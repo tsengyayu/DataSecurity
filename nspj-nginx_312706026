@@ -1,0 +1,40 @@
+# Last Modified: Sun Apr 14 14:53:53 2024
+include <tunables/global>
+
+# vim:syntax=apparmor
+# AppArmor policy for certspotter
+# ###AUTHOR###
+# ###COPYRIGHT###
+# ###COMMENT###
+# No template variables specified
+
+
+/usr/sbin/nginx {
+  include <abstractions/base>
+  #include <abstractions/apache2-common>
+
+  capability dac_override,
+  capability setgid,
+  capability setuid,
+
+  deny /var/www/html/unsafe_index.html rw,
+
+  /etc/nginx/nginx.conf rw,
+  /etc/nsswitch.conf rw,
+  /etc/passwd rw,
+  /etc/ssl/openssl.cnf rw,
+  /var/www/html/safe_index.html rw,
+  /var/log/nginx/error.log rw,
+  /etc/nginx/modules-enabled/ rw,
+  /etc/nginx/mime.types rw,
+  /etc/nginx/** rw,
+  /run/nginx.pid rw,
+  /var/log/nginx/** rw,
+  network inet,
+  network inet6,
+  capability net_bind_service,
+  /usr/share/nginx/modules-available/** rw,
+  owner /etc/group r,
+  owner /run/systemd/userdb/ r,
+
+}
